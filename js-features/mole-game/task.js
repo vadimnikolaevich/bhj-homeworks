@@ -23,8 +23,3 @@ for (let i = 1; i <= 9; i++) {
        }
 });
 }
-Footer
-© 2023 GitHub, Inc.
-Footer navigation
-Terms
-Privacy
