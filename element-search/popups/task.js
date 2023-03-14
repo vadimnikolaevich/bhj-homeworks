@@ -3,7 +3,7 @@ const modalSuccess = document.querySelector('#modal_success');
 const showSuccess = document.querySelector('.show-success');
 const cross = document.querySelectorAll('.modal__close');
 
-modalMain.classList.add('modal_active');
+modalMain.classList.toggle('modal_active');
 
 Array.from(cross).forEach((btn) => {
     btn.onclick = () => {
