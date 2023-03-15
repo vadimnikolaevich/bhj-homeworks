@@ -1,26 +1,24 @@
-const sliderItem = document.querySelectorAll(".slider__item");
-const prev = document.querySelector(".slider__arrow_prev");
-const next = document.querySelector(".slider__arrow_next");
-let slideNumber = 0;
+const slides = Array.from(document.getElementsByClassName('slider__item'));
+const dots = Array.from(document.getElementsByClassName('slider__dot'));
+const arrowNext = document.querySelector('.slider__arrow_next');
+const arrowPrev = document.querySelector('.slider__arrow_prev');
+let index = 0;
 
-next.onclick = () => {
-    sliderItem[slideNumber].classList.remove("slider__item_active");
-        if (slideNumber == sliderItem.length - 1) {
-            slideNumber = 0;
-        } else {
-            slideNumber++;
-        }
-        sliderItem[slideNumber].classList.add("slider__item_active");
+function changeSlides (index) {
+    slides[index].classList.toggle('slider__item_active');
+    dots[index].classList.toggle('slider__dot_active');
 }
 
-prev.onclick = () => {
-    sliderItem[slideNumber].classList.remove("slider__item_active");
-        if (slideNumber == 0) {
-            slideNumber = sliderItem.length - 1;
-        } else {
-            slideNumber--;
-        }
-    sliderItem[slideNumber].classList.add("slider__item_active");
+arrowNext.onclick = () => {
+    changeSlides(index);
+    index = index < slides.length - 1 ? index + 1 : 0;
+    changeSlides(index);
+}
+
+arrowPrev.onclick = () => {
+    changeSlides(index);
+    index = index > 0 ? index - 1 : slides.length - 1;
+    changeSlides(index);
 }
 
 function dotsToggle(index) {
@@ -30,4 +28,12 @@ function dotsToggle(index) {
 
     dots[index].classList.toggle('slider__dot_active');
     slides[index].classList.toggle('slider__item_active');
+}
+
+for (let i = 0; i < dots.length; i++) {
+    dots[i].addEventListener('click', () => {
+        dotsToggle(index);
+        index = i;
+        dotsToggle(index);
+    })
 }

@@ -1,12 +1,22 @@
-const links = Array.from(document.querySelectorAll(".menu__link"));
-const menuSub = Array.from(document.querySelectorAll(".menu_sub"));
+const menuLinks = document.querySelectorAll('.menu__link');
+const menuItems = document.querySelectorAll('.menu__item');
+const arrayLinks = Array.from(menuLinks);
+const arrayItems = Array.from(menuItems);
 
-links.forEach((link) => {
-    link.onclick = () => {
-        if (link.parentElement.querySelector(".menu_sub") !== null) {
-            menuSub.forEach((item) => item.classList.remove("menu_active"));
-                link.parentElement.querySelector(".menu_sub").classList.add("menu_active");
-            return false;
-        }
-  };
-});
+function openLink(element, event){
+    for(let elementItem of arrayItems){
+        if(element === elementItem.firstElementChild && element.matches('a[href=""]')){
+            let menuSub = elementItem.querySelector('.menu__item > .menu_sub');
+            if(menuSub.classList.contains('menu_active')){
+                menuSub.classList.remove('menu_active');
+            } else{
+                menuSub.classList.add('menu_active');
+            };
+            event.preventDefault();
+        };
+    };
+};
+
+for(let element of arrayLinks){
+    element.addEventListener("click", function(){openLink(element, event)});
+};
