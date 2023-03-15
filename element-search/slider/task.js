@@ -22,3 +22,12 @@ prev.onclick = () => {
         }
     sliderItem[slideNumber].classList.add("slider__item_active");
 }
+
+function dotsToggle(index) {
+    const activeDotIndex = dots.findIndex(dot => dot.classList.contains('slider__dot_active'));
+    dots[activeDotIndex].classList.toggle('slider__dot_active');
+    slides[activeDotIndex].classList.toggle('slider__item_active');
+
+    dots[index].classList.toggle('slider__dot_active');
+    slides[index].classList.toggle('slider__item_active');
+}
