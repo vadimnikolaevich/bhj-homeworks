@@ -17,6 +17,24 @@ class Game {
   }
 
   registerEvents() {
+    let time = 20;
+    document.addEventListener('keydown',(event) => {
+      if(event.key === this.currentSymbol.textContent){
+        this.success();
+        time = 20;
+      } else{
+        this.fail();
+        time = 20;
+      };
+    });
+      let timerID = setInterval(() => {
+        time -= 1;
+        if(time === 0){
+          alert('Слишком долгое ожидание!');
+          this.fail();
+          time = 20;
+        };
+      }, 1000);
     /*
       TODO:
       Написать обработчик события, который откликается
@@ -91,4 +109,3 @@ class Game {
 }
 
 new Game(document.getElementById('game'))
-
