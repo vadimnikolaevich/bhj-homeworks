@@ -1,39 +1,51 @@
-'use strict';
-// задание переменных
-const xhr = new XMLHttpRequest();
-const signin = document.querySelector('#signin');
-const signinBtn = document.querySelector('#signin__btn');
-const formSingin = document.forms.signin__form;
-const welcome = document.querySelector('#welcome');
+const signin = document.getElementById('signin');
+const signinForm = document.getElementById('signin__form');
+const welcome = document.getElementById("welcome");
+const userId = document.getElementById("user_id");
+const localUserId = localStorage.getItem('userId');
+const signOut = document.getElementById("sign__out");
 
-// авторизуемся на странице
-if(sessionStorage.getItem('id') !== null){
-  welcome.classList.add('welcome_active');
-  welcome.textContent += sessionStorage.getItem('id');
-  signin.classList.remove('signin_active');
-};
-// задаем обработчик события для формы
-formSingin.addEventListener('submit', function(event){
-    event.preventDefault();
-    const formData = new FormData(formSingin);
-    for(let value of formData.entries()){
-      sessionStorage.setItem(value[0], value[1]);
-    };
-    console.log(sessionStorage);
-    xhr.open('POST', 'https://students.netoservices.ru/nestjs-backend/auth');
-    xhr.send(formData);
-    xhr.addEventListener('load', function(event){
-        let stringAnswer = xhr.response.split(',')[0].split(':')[1];
-        console.log(stringAnswer);
-        let stringId = xhr.response.split(',')[1].split(':')[1];
-        console.log(stringId);
-        sessionStorage.setItem('id', `${stringId.substring(0, stringId.length-1)}`);
-        if(stringAnswer === 'true'){
-          welcome.classList.add('welcome_active');
-          welcome.textContent += stringId.substring(0, stringId.length-1);
-          signin.classList.remove('signin_active');
-        } else{
-          alert('Ошибка авторизации!');
-        };
+//localStorage.clear();
+
+
+function auth(id) {
+    signin.classList.toggle('signin_active');
+    welcome.classList.toggle('welcome_active');
+    userId.innerText = id;
+}   
+
+if (localUserId != null) {
+    auth(localUserId);
+}
+
+signinForm.addEventListener('submit', function (e) {
+    let formData = new FormData(signinForm);
+    let request = new XMLHttpRequest();
+    request.responseType = 'json';
+    request.open('POST', 'https://students.netoservices.ru/nestjs-backend/auth', true);
+    request.send(formData);
+
+    request.addEventListener('load', () => {
+        let authr = request.response;
+    
+        if (authr.success) {
+          localStorage.setItem('userId', auth.user_id);
+          auth(authr.user_id);
+        } else {
+          alert('Неверный логин/пароль');
+          //form.reset();
+        }
+      });
+      e.preventDefault();
     });
-});
+    
+    
+    window.onload = function() {
+        const storedUserId = localStorage.getItem('id');
+        console.log(storedUserId);
+    
+        if(userId) {
+            userId.textContent = storedUserId;
+            auth();
+        }
+    }
